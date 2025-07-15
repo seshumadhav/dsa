@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ULLV1Test" type="JUnit" factoryName="JUnit">
+    <module name="dsa" />
+    <option name="TEST_OBJECT" value="class" />
+    <option name="MAIN_CLASS_NAME" value="com.smc.dsa.ull.ULLV1Test" />
+    <option name="METHOD_NAME" value="" />
+    <option name="VM_PARAMETERS" value="" />
+    <option name="PARAMETERS" value="" />
+    <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+    <option name="ENV_VARIABLES" />
+    <option name="PASS_PARENT_ENVS" value="true" />
+    <option name="TEST_SEARCH_SCOPE">
+      <value defaultName="moduleWithDependencies" />
+    </option>
+    <RunnerSettings RunnerId="Debug" />
+    <ConfigurationWrapper RunnerId="Debug" />
+    <method v="2" />
+  </configuration>
+</component>
+
