@@ -2,7 +2,7 @@ package com.smc.dsa.ull;
 
 public class ULLV1 {
     public static final int NODE_CAPACITY = 4;
-    private int currentSize = 0;
+    private int ullCurrentSize = 0;
     private Node head = null;
 
     public Node getHead() {
@@ -13,7 +13,7 @@ public class ULLV1 {
 
     public char get(int index) {
         // Error handling
-        if (index < 0 || index >= currentSize) {
+        if (index < 0 || index >= ullCurrentSize) {
             throw new IndexOutOfBoundsException("Index (" + index + ") out of bounds");
         }
 
@@ -41,8 +41,8 @@ public class ULLV1 {
             throw new IndexOutOfBoundsException("Index for insertion (" + index + ") out of bounds");
         }
 
-        if (index > currentSize) {
-            throw new IllegalArgumentException("Index for insertion(" + index + ") cannot be greater than current size(" + currentSize + ")");
+        if (index > ullCurrentSize) {
+            throw new IllegalArgumentException("Index for insertion(" + index + ") cannot be greater than current size(" + ullCurrentSize + ")");
         }
 
         if (head == null) {
@@ -50,46 +50,88 @@ public class ULLV1 {
             head = new Node(0);
             head.array[0] = item;
             head.currentSize++;
-            currentSize++;
+            ullCurrentSize++;
             return head;
         }
 
-        Node currentNode = gotoTargetNodeAndReturnIt(index, head);
-
+        // Node currentNode = gotoTargetNodeAndReturnIt(index, head);
         // Double check if our index is still valid at this node
-        int relIndexInNode = index % NODE_CAPACITY;
-        if (relIndexInNode > currentNode.currentSize) {
-            throw new RuntimeException("this cannot happen, relIndexInNode should be less than currentSize of the node");
+        // int relIndexInNode = index % NODE_CAPACITY;
+
+        Node currentNode = head;
+
+        if (index < NODE_CAPACITY) {
+            currentNode.insert(index, item);
+            ullCurrentSize++;
+            return currentNode;
         }
 
+        int numItemsCountedInULLSoFar = 0;
+        int relIndexInNode = 0;
+        do  {
+            numItemsCountedInULLSoFar += currentNode.currentSize;
+            if (numItemsCountedInULLSoFar > index) {
+               relIndexInNode = index - (numItemsCountedInULLSoFar - currentNode.currentSize);
+               break;
+            }
+
+            if (numItemsCountedInULLSoFar == index && currentNode.next == null) {
+                Node newNode = new Node(currentNode.nodeId + 1);
+                Node.adjustPointers(currentNode, newNode);
+                currentNode = currentNode.next;
+
+                currentNode.insert(0, item);
+                ullCurrentSize++;
+                return currentNode;
+            }
+
+            if (numItemsCountedInULLSoFar == index && currentNode.next != null) {
+                currentNode.insert(0, item);
+                ullCurrentSize++;
+                return currentNode;
+            }
+
+                if (currentNode.next == null) {
+                    Node newNode = new Node(currentNode.nodeId + 1);
+                    Node.adjustPointers(currentNode, newNode);
+                }
+
+                currentNode = currentNode.next;
+        } while (currentNode.next != null);
+
+        relIndexInNode = index - numItemsCountedInULLSoFar;
+        if (relIndexInNode > currentNode.currentSize) {
+                throw new RuntimeException("this cannot happen, relIndexInNode should be less than currentSize of the node");
+         }
+
         currentNode.insert(relIndexInNode, item);
-        currentSize++;
+        ullCurrentSize++;
 
         // printList();
         // Can remove this and make the method void
         return currentNode;
     }
 
-    private Node gotoTargetNodeAndReturnIt(int index, Node head) {
-        int targetNodeNumber = index / NODE_CAPACITY;
-        int thisNodeNumber = 0;
-        Node currentNode = head;
+//    private Node gotoTargetNodeAndReturnIt(int index, Node head) {
+//        int targetNodeNumber = index / NODE_CAPACITY;
+//        int thisNodeNumber = 0;
+//        Node currentNode = head;
+//
+//        // Traverse to the target node, creating nodes as needed, and name them sequentially
+//        while (thisNodeNumber < targetNodeNumber) {
+//            if (currentNode.next == null) {
+//                // Always name nodes sequentially: head/node0, node1, node2, ...
+//                Node newNode = new Node(currentNode.nodeId+1);
+//                currentNode.next = newNode;
+//            }
+//            currentNode = currentNode.next;
+//            thisNodeNumber++;
+//        }
+//        return currentNode;
+//    }
 
-        // Traverse to the target node, creating nodes as needed, and name them sequentially
-        while (thisNodeNumber < targetNodeNumber) {
-            if (currentNode.next == null) {
-                // Always name nodes sequentially: head/node0, node1, node2, ...
-                Node newNode = new Node(currentNode.nodeId+1);
-                currentNode.next = newNode;
-            }
-            currentNode = currentNode.next;
-            thisNodeNumber++;
-        }
-        return currentNode;
-    }
-
-    public int getCurrentSize() {
-        return currentSize;
+    public int getUllCurrentSize() {
+        return ullCurrentSize;
     }
 
     public static void main(String[] args) {
@@ -118,7 +160,7 @@ public class ULLV1 {
         }
 
         public void insert(int relIndexInNode, char item) {
-            if (relIndexInNode >= NODE_CAPACITY) {
+            if (relIndexInNode > NODE_CAPACITY) {
                 throw new IllegalArgumentException("Something wrong. This cannot happen. relIndexInNode (" + relIndexInNode + ") is greater than NODE_CAPACITY (" + NODE_CAPACITY + ")");
             }
 
@@ -141,7 +183,7 @@ public class ULLV1 {
             }
 
             Node nextNode = this.next != null? this.next : new Node(this.nodeId+1);
-            
+
             char[] tempArray = new char[2*NODE_CAPACITY];
             int tempArraySize = 0;
 
@@ -205,7 +247,7 @@ public class ULLV1 {
                 // 1) Reset tempArray before updating and update it with nextNodeTempArray
                 tempArray = new char[2*NODE_CAPACITY];
                 tempArraySize = nextNodeTempArraySize;
-                System.arraycopy(nextNodeTempArray, 0, tempArray, 0, nextNodeTempArray.length);
+                System.arraycopy(nextNodeTempArray, 0, tempArray, 0, nextNodeTempArraySize);
                 // 2) Move to next Node
                 nodeOfInsertion = nextNode;
             }

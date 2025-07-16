@@ -14,7 +14,7 @@ class ULLV1Test {
     void insert_biggerThanCurrentSize_throwsIndexOutOfBoundsException() {
         ULLV1 ull = new ULLV1();
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () -> ull.insert(ull.getCurrentSize() + 1, 'A'));
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> ull.insert(ull.getUllCurrentSize() + 1, 'A'));
         assertTrue(exception.getMessage().contains("cannot be greater than current size"));
     }
 
@@ -107,7 +107,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(1, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('X', ull.get(1));
         assertEquals('B', ull.get(2));
@@ -132,7 +132,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(3, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -157,7 +157,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(0, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('X', ull.get(0));
         assertEquals('A', ull.get(1));
         assertEquals('B', ull.get(2));
@@ -182,7 +182,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(1, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('X', ull.get(1));
         assertEquals('B', ull.get(2));
@@ -207,7 +207,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(2, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('X', ull.get(2));
@@ -232,7 +232,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(3, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -257,7 +257,7 @@ class ULLV1Test {
 
         // Final insert
         ull.insert(4, 'X');
-        assertEquals(5, ull.getCurrentSize());
+        assertEquals(5, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -286,7 +286,7 @@ class ULLV1Test {
         ull.insert(2, 'X');
 
 
-        assertEquals(7, ull.getCurrentSize());
+        assertEquals(7, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('X', ull.get(2));
@@ -317,7 +317,7 @@ class ULLV1Test {
         ull.insert(5, 'Y');
 
 
-        assertEquals(7, ull.getCurrentSize());
+        assertEquals(7, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -350,7 +350,7 @@ class ULLV1Test {
         printInsertedItems(ull);
         ull.printList();
 
-        assertEquals(10, ull.getCurrentSize());
+        assertEquals(10, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -387,7 +387,7 @@ class ULLV1Test {
         ull.printList();
         // Insert at end of filled part of 2nd node (index 6)
         ull.insert(3, 'X');
-        assertEquals(11, ull.getCurrentSize());
+        assertEquals(11, ull.getUllCurrentSize());
         assertEquals('A', ull.get(0));
         assertEquals('B', ull.get(1));
         assertEquals('C', ull.get(2));
@@ -422,9 +422,9 @@ class ULLV1Test {
     private void printInsertedItems(ULLV1 ull) {
         StringBuilder sb = new StringBuilder();
         sb.append("Here are the items inserted and in the same order: ");
-        for (int i = 0; i < ull.getCurrentSize(); i++) {
+        for (int i = 0; i < ull.getUllCurrentSize(); i++) {
             sb.append("'").append(ull.get(i)).append("'");
-            if (i < ull.getCurrentSize() - 1) sb.append(", ");
+            if (i < ull.getUllCurrentSize() - 1) sb.append(", ");
         }
         System.out.println(sb.toString());
     }
