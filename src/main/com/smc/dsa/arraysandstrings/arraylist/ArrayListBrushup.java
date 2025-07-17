@@ -1,4 +1,4 @@
-package com.smc.dsa.arraylist;
+package com.smc.dsa.arraysandstrings.arraylist;
 
 import java.util.ArrayList;
 
