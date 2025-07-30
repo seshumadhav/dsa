@@ -98,7 +98,6 @@ public class MyDirectedGraph {
         mdg.insert("1", "3");
         mdg.insert("1", "4");
 
-
         mdg.insert("2", "1");
 
         mdg.insert("3", "2");
@@ -170,6 +169,45 @@ public class MyDirectedGraph {
         assertFalse(mdg.doesRouteExist("4", "3"));
         assertFalse(mdg.doesRouteExist("4", "5"));
 
+
+        MyDirectedGraph mdg2 = new MyDirectedGraph();
+        mdg2.insert("0", "1");
+        mdg2.insert("0", "4");
+        mdg2.insert("0", "5");
+
+        mdg2.insert("1", "3");
+        mdg2.insert("1", "4");
+
+        mdg2.insert("3", "2");
+        mdg2.insert("3", "4");
+
+        mdg2.insert("4", null);
+        mdg2.insert("5", null);
+
+        String ts = mdg2.topoSort().trim();
+        assertTrue(ts.equals("0 5 1 3 2 4")
+            || ts.equals("0 1 5 3 2 4")
+                || ts.equals("0 5 1 3 4 2")
+                || ts.equals("0 1 5 3 4 2")
+        );
+    }
+
+    private String topoSort() {
+        StringBuilder sb = new StringBuilder();
+
+        List<String> nodesWithIncomingEdges = new ArrayList<String>();
+        nodesWithIncomingEdges.addAll(adjMatrix.values());
+
+        return sb.toString().trim();
+    }
+
+    private static List<String> getValues(Map<String, String> map) {
+        List<String> valueList = new ArrayList<String>();
+        for (String value : map.values()) {
+            valueList.add(value);
+        }
+
+        return valueList;
     }
 
 }
