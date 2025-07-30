@@ -2,8 +2,7 @@ package com.smc.dsa.treesandgraphs;
 
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class MyDirectedGraph {
 
@@ -18,6 +17,7 @@ public class MyDirectedGraph {
             adjMatrix.get(startNodeName).add(endNodeName);
         }
     }
+
     public String traverse(String startNode) {
         if (startNode == null) {
             return "";
@@ -61,6 +61,32 @@ public class MyDirectedGraph {
         return null;
     }
 
+    public boolean doesRouteExist(String src, String dest) {
+        if (src.equals(dest)) {
+            return true;
+        }
+        
+        Queue<String> queue = new LinkedList<>();
+        Set<String> visited = new HashSet<>();
+        queue.add(src);
+        
+        while (!queue.isEmpty()) {
+            String node = queue.remove();
+            if (visited.contains(node)) {
+                continue;
+            }
+
+            if (node.equals(dest)) {
+                return true;
+            }
+
+            visited.add(node);
+            queue.addAll(adjMatrix.get(node));
+        }
+
+        return false;
+    }
+
     public static void main(String[] args) {
 
 
@@ -100,6 +126,50 @@ public class MyDirectedGraph {
         traversalResult = mdg.traverse("5").trim();
         System.out.println("Graph traversal starting '5': " + traversalResult);
         assertEquals("5", traversalResult);
+
+        assertTrue(mdg.doesRouteExist("2", "1"));
+        assertTrue(mdg.doesRouteExist("2", "4"));
+        assertTrue(mdg.doesRouteExist("2", "3"));
+        assertTrue(mdg.doesRouteExist("2", "2"));
+        assertFalse(mdg.doesRouteExist("2", "5"));
+
+        assertTrue(mdg.doesRouteExist("0", "0"));
+        assertTrue(mdg.doesRouteExist("0", "1"));
+        assertTrue(mdg.doesRouteExist("0", "2"));
+        assertTrue(mdg.doesRouteExist("0", "4"));
+        assertTrue(mdg.doesRouteExist("0", "5"));
+        assertTrue(mdg.doesRouteExist("0", "3"));
+
+        assertTrue(mdg.doesRouteExist("3", "4"));
+        assertTrue(mdg.doesRouteExist("3", "2"));
+        assertTrue(mdg.doesRouteExist("3", "1"));
+        assertTrue(mdg.doesRouteExist("3", "4"));
+        assertFalse(mdg.doesRouteExist("3", "5"));
+
+        assertTrue(mdg.doesRouteExist("1", "3"));
+        assertTrue(mdg.doesRouteExist("1", "4"));
+        assertTrue(mdg.doesRouteExist("1", "2"));
+        assertFalse(mdg.doesRouteExist("1", "0"));
+        assertFalse(mdg.doesRouteExist("1", "5"));
+
+        assertTrue(mdg.doesRouteExist("1", "3"));
+        assertTrue(mdg.doesRouteExist("1", "4"));
+        assertTrue(mdg.doesRouteExist("1", "2"));
+        assertFalse(mdg.doesRouteExist("1", "0"));
+        assertFalse(mdg.doesRouteExist("1", "5"));
+
+        assertFalse(mdg.doesRouteExist("5", "0"));
+        assertFalse(mdg.doesRouteExist("5", "1"));
+        assertFalse(mdg.doesRouteExist("5", "2"));
+        assertFalse(mdg.doesRouteExist("5", "3"));
+        assertFalse(mdg.doesRouteExist("5", "4"));
+
+        assertFalse(mdg.doesRouteExist("4", "0"));
+        assertFalse(mdg.doesRouteExist("4", "1"));
+        assertFalse(mdg.doesRouteExist("4", "2"));
+        assertFalse(mdg.doesRouteExist("4", "3"));
+        assertFalse(mdg.doesRouteExist("4", "5"));
+
     }
 
 }
