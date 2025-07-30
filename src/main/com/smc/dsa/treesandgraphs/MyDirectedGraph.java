@@ -30,8 +30,11 @@ public class MyDirectedGraph {
         StringBuilder sb = new StringBuilder();
 
         do {
-            String node = queue.isEmpty() ? findAnUnvisitedNode(adjMatrix, visited) : queue.remove();
 
+            // This was a bug. Since in disconnected graph, we do not want to traverse the other disconnected part
+            // String node = queue.isEmpty() ? findAnUnvisitedNode(adjMatrix, visited) : queue.remove();
+
+            String node = queue.poll();
             if (visited.contains(node) || node == null) {
                 continue;
             }
@@ -39,7 +42,10 @@ public class MyDirectedGraph {
             sb.append(node).append(" ");
             visited.add(node);
             queue.addAll(adjMatrix.get(node));
-        } while (!queue.isEmpty() || visited.size() < adjMatrix.size());
+
+            // This exit condition was a bug; There would be no way to get out the loop.
+            // } while (!queue.isEmpty() || visited.size() < adjMatrix.size());
+        } while (!queue.isEmpty());
 
         return sb.toString();
     }
@@ -54,6 +60,7 @@ public class MyDirectedGraph {
 
         return null;
     }
+
     public static void main(String[] args) {
 
 
@@ -78,9 +85,21 @@ public class MyDirectedGraph {
         System.out.println("Graph traversal starting '0': " + traversalResult);
         assertEquals("0 1 4 5 3 2", traversalResult);
 
-        traversalResult = mdg.traverse("2");
+        traversalResult = mdg.traverse("2").trim();
         System.out.println("Graph traversal starting '2': " + traversalResult);
         assertTrue(traversalResult.equals("2 1 3 4") || traversalResult.equals("2 1 4 3"));
+
+        traversalResult = mdg.traverse("3").trim();
+        System.out.println("Graph traversal starting '3': " + traversalResult);
+        assertTrue(traversalResult.equals("3 4") || traversalResult.equals("3 2 4 1"));
+
+        traversalResult = mdg.traverse("4").trim();
+        System.out.println("Graph traversal starting '4': " + traversalResult);
+        assertEquals("4", traversalResult);
+
+        traversalResult = mdg.traverse("5").trim();
+        System.out.println("Graph traversal starting '5': " + traversalResult);
+        assertEquals("5", traversalResult);
     }
 
 }
