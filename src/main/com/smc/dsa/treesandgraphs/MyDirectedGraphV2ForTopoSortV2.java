@@ -30,21 +30,22 @@ public class MyDirectedGraphV2ForTopoSortV2 {
         Queue<String> queue = getIndegree0(indegree);
 
         while (!queue.isEmpty()) {
-            String node = queue.remove();
+            String node = queue.poll();
             ordering.add(node);
 
             // Update indegrees of targets starting from this node
-            for(Map.Entry<String, List<String>> entry : adjList.entrySet()) {
-                if (entry.getKey().equals(node)) {
-                    for (String target : entry.getValue()) {
-                        int newIndegree = indegree.get(target) - 1;
-                        indegree.put(target, newIndegree);
-                        if (newIndegree == 0) {
-                            queue.add(target);
-                        }
-                    }
+            for (String target : adjList.get(node)) {
+                int newIndegree = indegree.get(target) - 1;
+                indegree.put(target, newIndegree);
+                if (newIndegree == 0) {
+                    queue.add(target);
                 }
             }
+
+        }
+
+        if (ordering.size() != indegree.size()) {
+            throw new RuntimeException("Graph contains a cycle. Topological sort not possible.");
         }
 
         return ordering;
